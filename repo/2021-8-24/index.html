@@ -11,8 +11,142 @@
     <div class="slides">
 
       <section>
+        <h2 class="r-rstrech">🙋‍♂️</h2>
+      </section>
+
+      <section>
+        <h2 class="r-rstrech">进度</h2>
+        <ul>
+          <li style="color:#d48ca7"> 背景调查</li>
+          <li style="color:#d48ca7"> 架构设计</li>
+          <li style="color:#d48ca7"> QEMU 的代码搬运</li>
+          <ul style="color:#d48ca7">
+            <li>枚举出来依赖的外部库</li>
+            <li>枚举出来需要重构的接口</li>
+          </ul>
+          <li>用户态测试 seabios 代码</li>
+          <li>移除依赖的第三方库</li>
+          <li>裸机测试 Linux</li>
+          <li>裸机测试 Windows</li>
+          <li>64bit 支持</li>
+          <li>移植 HAMT</li>
+          <li>多核支持</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>设计</h2>
+        <img class="fragment" src="../../images/obito.jpg">
+      </section>
+
+      <section>
+        <h2>设计</h2>
+        <img class="fragment" src="../../images/obito.jpg">
+      </section>
+
+      <section>
+        <h2>思路</h2>
+        <table class="r-stretch">
+          <thead>
+            <tr>
+              <th>需求</th>
+              <th>解决方法</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>简化软件栈</td>
+              <td>采用类似 unikernel 的方法，地址空间只有一个二进制翻译器</td>
+            </tr>
+            <tr>
+              <td>开机即为 Windows</td>
+              <td>采用类似 Ramooflax 的方法，bios 启动之后就是二进制翻译器, 然后执行 guest</td>
+            </tr>
+            <tr>
+              <td>加速设备虚拟化</td>
+              <td>将设备全部交给 guest 机器管理，实现设备直通</td>
+            </tr>
+            <tr>
+              <td>加速虚拟化</td>
+              <td>QEMU 直接管理中断，无需 Linux 参与</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2>思路</h2>
+        <p>总结一下</p>
+        <ol>
+          <li>简化 Linux + QEMU 的软件栈</li>
+          <li>开机即为 Windows</li>
+          <li>在当前加速技术上进一步加速设备和中断虚拟化</li>
+        </ol>
+      </section>
+
+      <section>
+        <h2>Ramooflax</h2>
+        <img class="fragment" src="../../images/obito.jpg">
+      </section>
+
+      <section>
         <h2>背景</h2>
-        <p class="r-stretch">Linux + QEMU 实现系统态翻译的问题</p>
+        <p>unikernel: 只为一个进程服务的 guest os</p>
+        <img class="fragment"
+          src="https://raw.githubusercontent.com/cetic/unikernels/master/MEDIA/normal_application_stack.PNG">
+        <img class="fragment"
+          src="https://raw.githubusercontent.com/cetic/unikernels/master/MEDIA/unikernel_application_stack.PNG">
+      </section>
+
+      <section>
+        <h2>背景</h2>
+        <p>QEMU 无所不能，但过于复杂</p>
+        <!-- 放一个 QEMU 的参数列表 -->
+        <img class="r-stretch" src="../../images/obito.jpg">
+      </section>
+
+      <section>
+        <h2>背景</h2>
+        <p>内核功能强大，但过于复杂</p>
+        <!-- 放一个到网卡的 stack -->
+        <img class="r-stretch" src="../../images/obito.jpg">
+      </section>
+
+      <section>
+        <h2>背景</h2>
+        <p>目前进行的优化</p>
+        <table class="r-stretch">
+          <thead>
+            <tr>
+              <th>内容</th>
+              <th>优化方法</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>CPU</td>
+              <td>采用 xqm 移除 tcg</td>
+            </tr>
+            <tr>
+              <td>内存</td>
+              <td>BTMMU / HAMT</td>
+            </tr>
+            <tr>
+              <td>设备</td>
+              <td>X</td>
+            </tr>
+            <tr>
+              <td>中断</td>
+              <td>X</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>尚且没有触碰到 Device 和 Interrupt</p>
+      </section>
+
+      <section>
+        <h2>背景</h2>
+        <p>Linux + QEMU 实现系统态翻译的问题</p>
         <table class="r-stretch">
           <thead>
             <tr>
@@ -46,29 +180,18 @@
         </table>
       </section>
 
-      <section>
-        <h2>BMBT : Bare Metal Binary Translator</h2>
-        <!-- <img class="r-stretch" src="../../images/obito.jpg"> -->
-        <ol>
-          <li>目的</li>
-          <li>动机</li>
-          <li>思路</li>
-          <li>计划</li>
-          <li>进度</li>
-        </ol>
-      </section>
 
       <section>
         <h2>背景</h2>
         <p> Linux + QEMU 的系统态模拟</p>
-        <!--    搞一个图从      -->
+        <!--    搞一个图描述一下      -->
         <img class="r-stretch" src="../../images/obito.jpg">
       </section>
 
       <section>
         <h2>目的</h2>
 
-        <section >
+        <section>
           <ul>
             <li>开机之后启动 x86 操作系统</li>
             <li>加快系统态翻译</li>
@@ -83,37 +206,17 @@
 
       </section>
 
-
-
       <section>
-        <h2></h2>
-        <div class="r-stack">
-          <img class="fragment" src="https://placekitten.com/450/300" width="450" height="300">
-          <img class="fragment" src="https://placekitten.com/300/450" width="300" height="450">
-          <img class="fragment" src="https://placekitten.com/400/400" width="400" height="400">
-        </div>
+        <h2>BMBT : Bare Metal Binary Translator</h2>
+        <!-- <img class="r-stretch" src="../../images/obito.jpg"> -->
+        <ol>
+          <li>目的</li>
+          <li>动机</li>
+          <li>思路</li>
+          <li>设计</li>
+          <li>进度</li>
+        </ol>
       </section>
-
-      <section data-background-image="../../images/linux-window.png">
-        <h2>Image</h2>
-      </section>
-      <section data-background-image="../../images/linux-window.png" data-background-size="1000px"
-        data-background-repeat="repeat">
-        <h2>This background image will be sized to 100px and repeated</h2>
-      </section>
-
-      <section data-background-color="#d48ca7">
-        <h2>📖 </h2>
-      </section>
-
-      <section>Horizontal Slide</section>
-      <section>
-        <section>Vertical Slide 1</section>
-        <section>Vertical Slide 2</section>
-      </section>
-
-      <section data-state="make-it-pop"></section>
-
     </div>
   </div>
 
