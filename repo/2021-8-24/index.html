@@ -10,37 +10,48 @@
     <div class="slides">
 
       <section>
-        <h2>动机</h2>
+        <h2>设计</h2>
+        <img class="r-stretch" src="../../images/bmbt.svg">
+      </section>
+
+      <section>
+        <h2>设计</h2>
+        <div class="text-left">
+          <ul>
+            <li>简化 QEMU 和 Linux Kernel 的软件栈</li>
+            <li>利用上 x86-qemu-mips 和 hamt 的优化</li>
+            <li>BIOS 启动之后执行翻译器，然后让 guest 直接接管硬件资源</li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>想法</h2>
         <p>Captive</p>
+        <img class="r-stretch" src="../../images/captive.png">
+        <p style="font-size:0.5em"> captive 将二进制翻译器放到 guest 态从而其可以获取直接访问系统资源的能力。
+          <span class="footnote">[<a id="_footnoteref_1" class="footnote" href="" title="">A Retargetable System-Level
+              DBT Hypervisor</a>]</span>
+          <br>这启发我们, 其实可以将二进制翻译器直接放到裸金属上。
         </p>
       </section>
 
       <section>
-        <h2>动机</h2>
+        <h2>想法</h2>
         <p>Ramooflax</p>
         <img class="r-stretch" src="../../images/ramooflax.png">
         <p style="font-size:0.5em">
-          ramooflax 紧接着 bios 之后运行，之后其可以将 native 的 os 放到虚拟机中运行。
+          ramooflax 紧接着 BIOS 之后运行，之后其可以将 native 的 os 放到虚拟机中运行。
           <span class="footnote">[<a id="_footnoteref_1" class="footnote"
-              href="https://github.com/airbus-seclab/ramooflax" title="">1</a>]</span>
-          这启发我们，QEMU + unikernel 的制作可以采取类似的运行流程，只是需要将 intel vmx 加速的虚拟化替换为二进制翻译器即可。<br>而且，host 将设备完全交给 guest 管理，证明了设备直通的可行性。
+              href="https://github.com/airbus-seclab/ramooflax"
+              title="">https://github.com/airbus-seclab/ramooflax</a>]</span> <br>
+          这启发我们，QEMU + unikernel 的制作可以采取类似的运行流程，只是需要将 intel vmx 加速的虚拟化替换为二进制翻译器即可。而且，host 将设备完全交给 guest
+          管理，证明了设备直通的可行性。
         </p>
       </section>
 
       <section>
-        <h2>动机</h2>
-        <p>Ramooflax</p>
-        <img class="r-stretch" src="../../images/ramooflax.png">
-        <p style="font-size:0.5em">
-          在启动 host 的 bios 之后，然后启动 ramooflax，之后 ramooflax 可以将 native 的 os 放到虚拟机中运行。
-          <span class="footnote">[<a id="_footnoteref_1" class="footnote"
-              href="https://github.com/airbus-seclab/ramooflax" title="">1</a>]</span>
-          这启发我们，QEMU + unikernel 的制作可以采取类似的运行流程，只是需要将 intel vmx 加速的虚拟化替换为二进制翻译器。而且，host 将设备完全交给 guest 管理，证明了设备直通的可行性。
-        </p>
-      </section>
-
-      <section>
-        <h2>动机</h2>
+        <h2>想法</h2>
         <p>Transmeta</p>
 
         <img class="r-stretch" src="../../images/transmeta.png">
@@ -55,17 +66,19 @@
       </section>
       <section>
 
-        <h2>动机</h2>
+        <h2>想法</h2>
         构建一个针对于 QEMU 的 unikernel
         <img class="r-stretch" src="../../images/qemu-in-unikernel.svg">
-        <p>
-          <li style="font-size:0.5em">构建一个 unikernel，其中只是运行 QEMU</li>
-          <li style="font-size:0.5em">QEMU 运行在 kernel 态, 从而可以直接使用访问 TLB 来加速访存</li>
-        </p>
+        <div class="text-left">
+          <ul>
+            <li style="font-size:0.5em">构建一个 unikernel，其中只是运行 QEMU</li>
+            <li style="font-size:0.5em">QEMU 运行在 kernel 态, 从而可以直接使用访问 TLB 来加速访存</li>
+          </ul>
+        </div>
       </section>
 
       <section>
-        <h2>动机</h2>
+        <h2>想法</h2>
         <p>unikernel: 只为一个进程服务的 guest os</p>
         <img class="fragment"
           src="https://raw.githubusercontent.com/cetic/unikernels/master/MEDIA/normal_application_stack.PNG">
@@ -74,13 +87,13 @@
       </section>
 
       <section>
-        <h2>动机</h2>
+        <h2>想法</h2>
         <img class="r-stretch" src="../../images/qemu-loc.png">
         <p style="font-size:0.5em">QEMU 可以运行在各种操作系统上，支持 kvm tcg hvf xen 等 cpu 虚拟化方案，支持多种设备的模拟</p>
       </section>
 
       <section>
-        <h2>动机</h2>
+        <h2>想法</h2>
         <img class="r-stretch" src="../../images/LKM.svg">
         <p style="font-size:0.5em">Linux 内核很强大，但是对于系统态二进制翻译器而言，大多数功能不需要，其他的进程对于 QEMU 而言是只是干扰</p>
         <div class="paragraph" style="font-size:0.2em">
@@ -180,7 +193,7 @@
             <li>枚举出来依赖的外部库</li>
             <li>枚举出来需要重构的接口</li>
           </ul>
-          <li>用户态测试 seabios 代码</li>
+          <li>用户态测试 SeaBIOS 代码</li>
           <li>移除依赖的第三方库</li>
           <li>裸机测试 32bit x86 Linux</li>
           <li style="color:#dbb330">裸机测试 xp</li>
@@ -191,49 +204,22 @@
       </section>
 
       <section>
-        <h2>设计</h2>
-        <img class="fragment" src="../../images/obito.jpg">
-      </section>
-
-      <section>
-        <h2>设计</h2>
-        <img class="fragment" src="../../images/obito.jpg">
-      </section>
-
-      <section>
-        <h2>裸金属二进制翻译器的设计与实现</h2>
-        <!-- <img class="r-stretch" src="../../images/obito.jpg"> -->
-        <ol>
-          <li>目的</li>
-          <li>背景</li>
-          <li>动机</li>
-          <li>设计</li>
-          <li>进度</li>
-        </ol>
-      </section>
+        <section>
+          <h2>裸金属二进制翻译器的设计与实现</h2>
+          <!-- <img class="r-stretch" src="../../images/obito.jpg"> -->
+          <ol>
+            <li>目的</li>
+            <li>背景</li>
+            <li>想法</li>
+            <li>设计</li>
+            <li>进度</li>
+          </ol>
     </div>
   </div>
 
   <script src="../../reveal.js/dist/reveal.js"></script>
   <script>
     Reveal.initialize({
-
-      // Display presentation control arrows
-      controls: true,
-
-      // Help the user learn the controls by providing hints, for example by
-      // bouncing the down arrow when they first encounter a vertical slide
-      controlsTutorial: true,
-
-      // Determines where controls appear, "edges" or "bottom-right"
-      controlsLayout: 'bottom-right',
-
-      // Visibility rule for backwards navigation arrows; "faded", "hidden"
-      // or "visible"
-      controlsBackArrows: 'faded',
-
-      // Display a presentation progress bar
-      progress: true,
 
       // Display the page number of the current slide
       // - true:    Show slide number
@@ -249,43 +235,11 @@
       // number for the current slide. The function should take in a slide
       // object and return an array with one string [slideNumber] or
       // three strings [n1,delimiter,n2]. See #formatSlideNumber().
-      slideNumber: false,
-
-      // Can be used to limit the contexts in which the slide number appears
-      // - "all":      Always show the slide number
-      // - "print":    Only when printing to PDF
-      // - "speaker":  Only in the speaker view
-      showSlideNumber: 'all',
-
-      // Use 1 based indexing for # links to match slide number (default is zero
-      // based)
-      hashOneBasedIndex: false,
-
-      // Add the current slide number to the URL hash so that reloading the
-      // page/copying the URL will return you to the same slide
-      hash: false,
-
-      // Flags if we should monitor the hash and change slides accordingly
-      respondToHashChanges: true,
-
-      // Push each slide change to the browser history.  Implies `hash: true`
-      history: false,
-
-      // Enable keyboard shortcuts for navigation
-      keyboard: true,
-
-      // Optional function that blocks keyboard events when retuning false
-      //
-      // If you set this to 'focused', we will only capture keyboard events
-      // for embedded decks when they are in focus
-      keyboardCondition: null,
+      slideNumber: true,
 
       // Disables the default reveal.js slide layout (scaling and centering)
       // so that you can use custom CSS layout
       disableLayout: false,
-
-      // Enable the slide overview mode
-      overview: true,
 
       // Vertical centering of slides
       center: true,
@@ -294,39 +248,10 @@
       touch: true,
 
       // Loop the presentation
-      loop: false,
+      loop: true,
 
       // Change the presentation direction to be RTL
       rtl: false,
-
-      // Changes the behavior of our navigation directions.
-      //
-      // "default"
-      // Left/right arrow keys step between horizontal slides, up/down
-      // arrow keys step between vertical slides. Space key steps through
-      // all slides (both horizontal and vertical).
-      //
-      // "linear"
-      // Removes the up/down arrows. Left/right arrows step through all
-      // slides (both horizontal and vertical).
-      //
-      // "grid"
-      // When this is enabled, stepping left/right from a vertical stack
-      // to an adjacent vertical stack will land you at the same vertical
-      // index.
-      //
-      // Consider a deck with six slides ordered in two vertical stacks:
-      // 1.1    2.1
-      // 1.2    2.2
-      // 1.3    2.3
-      //
-      // If you're on slide 1.3 and navigate right, you will normally move
-      // from 1.3 -> 2.1. If "grid" is used, the same navigation takes you
-      // from 1.3 -> 2.3.
-      navigationMode: 'default',
-
-      // Randomizes the order of slides each time the presentation loads
-      shuffle: false,
 
       // Turns fragments on and off globally
       fragments: true,
