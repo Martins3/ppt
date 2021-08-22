@@ -3,7 +3,6 @@
 <head>
   <link rel="stylesheet" href="../../reveal.js/dist/reveal.css">
   <link rel="stylesheet" href="../../reveal.js/dist/theme/sky.css">
-  <link rel="stylesheet" href="./hack.css">
 </head>
 
 <body>
@@ -11,7 +10,164 @@
     <div class="slides">
 
       <section>
-        <h2 class="r-rstrech">🙋‍♂️</h2>
+        <h2>动机</h2>
+        <p>Captive</p>
+        </p>
+      </section>
+
+      <section>
+        <h2>动机</h2>
+        <p>Ramooflax</p>
+        <img class="r-stretch" src="../../images/ramooflax.png">
+        <p style="font-size:0.5em">
+          ramooflax 紧接着 bios 之后运行，之后其可以将 native 的 os 放到虚拟机中运行。
+          <span class="footnote">[<a id="_footnoteref_1" class="footnote"
+              href="https://github.com/airbus-seclab/ramooflax" title="">1</a>]</span>
+          这启发我们，QEMU + unikernel 的制作可以采取类似的运行流程，只是需要将 intel vmx 加速的虚拟化替换为二进制翻译器即可。<br>而且，host 将设备完全交给 guest 管理，证明了设备直通的可行性。
+        </p>
+      </section>
+
+      <section>
+        <h2>动机</h2>
+        <p>Ramooflax</p>
+        <img class="r-stretch" src="../../images/ramooflax.png">
+        <p style="font-size:0.5em">
+          在启动 host 的 bios 之后，然后启动 ramooflax，之后 ramooflax 可以将 native 的 os 放到虚拟机中运行。
+          <span class="footnote">[<a id="_footnoteref_1" class="footnote"
+              href="https://github.com/airbus-seclab/ramooflax" title="">1</a>]</span>
+          这启发我们，QEMU + unikernel 的制作可以采取类似的运行流程，只是需要将 intel vmx 加速的虚拟化替换为二进制翻译器。而且，host 将设备完全交给 guest 管理，证明了设备直通的可行性。
+        </p>
+      </section>
+
+      <section>
+        <h2>动机</h2>
+        <p>Transmeta</p>
+
+        <img class="r-stretch" src="../../images/transmeta.png">
+
+        <p style="font-size:0.5em">
+          Transmeta 公司推出的 Crusoe VLIW 芯片，其利用 Code Morphing Software (CMS)
+          将 X86 指令翻译为 VLIW 指令，并使用硬件加速 Speculation , Precise exceptions 和 MMIO 访问等。
+          <span class="footnote">[<a id="_footnoteref_1" class="footnote" href="" title="">The Transmeta Code Morphing
+              Software: Using Speculation, Recovery, and Adaptive Retranslation to Address Real-Life
+              Challenges</a>]</span>
+        </p>
+      </section>
+      <section>
+
+        <h2>动机</h2>
+        构建一个针对于 QEMU 的 unikernel
+        <img class="r-stretch" src="../../images/qemu-in-unikernel.svg">
+        <p>
+          <li style="font-size:0.5em">构建一个 unikernel，其中只是运行 QEMU</li>
+          <li style="font-size:0.5em">QEMU 运行在 kernel 态, 从而可以直接使用访问 TLB 来加速访存</li>
+        </p>
+      </section>
+
+      <section>
+        <h2>动机</h2>
+        <p>unikernel: 只为一个进程服务的 guest os</p>
+        <img class="fragment"
+          src="https://raw.githubusercontent.com/cetic/unikernels/master/MEDIA/normal_application_stack.PNG">
+        <img class="fragment"
+          src="https://raw.githubusercontent.com/cetic/unikernels/master/MEDIA/unikernel_application_stack.PNG">
+      </section>
+
+      <section>
+        <h2>动机</h2>
+        <img class="r-stretch" src="../../images/qemu-loc.png">
+        <p style="font-size:0.5em">QEMU 可以运行在各种操作系统上，支持 kvm tcg hvf xen 等 cpu 虚拟化方案，支持多种设备的模拟</p>
+      </section>
+
+      <section>
+        <h2>动机</h2>
+        <img class="r-stretch" src="../../images/LKM.svg">
+        <p style="font-size:0.5em">Linux 内核很强大，但是对于系统态二进制翻译器而言，大多数功能不需要，其他的进程对于 QEMU 而言是只是干扰</p>
+        <div class="paragraph" style="font-size:0.2em">
+          <p>
+            <span class="footnote">[<a id="_footnoteref_1" class="footnote"
+                href="https://makelinux.github.io/kernel/map/" title="View footnote.">1</a>]</span>
+            Linux Kernel Maps
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2>背景</h2>
+        <p>Linux + QEMU 实现系统态翻译 : hamt 加速访存</p>
+        <img class="r-stretch" src="../../images/hamt.svg">
+        <p style="font-size:0.5em">利用 dune 可以将 QEMU 放到 guest 态, 从而 QEMU 可以直接访问 TLB 来加速访存</p>
+      </section>
+
+      <section>
+        <h2>背景</h2>
+        <p style="font-size:0.9em">Linux + QEMU 实现系统态翻译 : xqm 加速 cpu 虚拟化</p>
+        <img class="r-stretch" src="../../images/tcg.svg">
+        <p style="font-size:0.5em">为了实现多个架构之间互相翻译，QEMU 采用了 tcg ir, 但是这导致了翻译质量下降。<br>而 mips-x86-qemu 项目将 tcg 移除掉了。</p>
+      </section>
+
+      <section>
+        <h2>背景</h2>
+        <p>Linux + QEMU 实现系统态翻译的几个部分</p>
+        <table class="r-stretch">
+          <thead>
+            <tr>
+              <th>内容</th>
+              <th>二进制翻译模拟方法</th>
+              <th>kvm</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>CPU</td>
+              <td>tcg 逐条指令翻译</td>
+              <td>硬件加速, 相同架构指令直接执行</td>
+            </tr>
+            <tr>
+              <td>内存</td>
+              <td>softmmu</td>
+              <td>two dimension paging</td>
+            </tr>
+            <tr>
+              <td>设备 / 中断</td>
+              <td>设备模拟 / virtio / <mark> VFIO</mark>
+                <span class="footnote">[<a id="_footnoteref_1" class="footnote"
+                    href="https://bugs.launchpad.net/qemu/+bug/1869006" title="View footnote.">3</a>]</span>
+              </td>
+              <td>设备模拟 / virtio / VFIO</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+
+      <section>
+        <h2>背景</h2>
+        <p> Linux + QEMU 实现系统态翻译</p>
+        <img class="r-stretch" src="../../images/QEMU-ARCH.svg">
+
+        <div class="paragraph" style="font-size:0.2em">
+          <p> qemu code
+            <span class="footnote">[<a id="_footnoteref_1" class="footnote"
+                href="https://vmsplice.net/~stefan/qemu-code-overview.pdf" title="View footnote.">2</a>]</span>
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2>目的</h2>
+
+        <section>
+          <li>消灭指令集的差异</li>
+        </section>
+
+        <section>
+          <li>LoongArch 架构高效运行其他架构操作系统</li>
+        </section>
+
+        <section>
+          <li>加速 LoongArch 上 x86 客户机操作系统运行</li>
+        </section>
       </section>
 
       <section>
@@ -26,11 +182,11 @@
           </ul>
           <li>用户态测试 seabios 代码</li>
           <li>移除依赖的第三方库</li>
-          <li>裸机测试 Linux</li>
-          <li>裸机测试 Windows</li>
-          <li>64bit 支持</li>
-          <li>移植 HAMT</li>
-          <li>多核支持</li>
+          <li>裸机测试 32bit x86 Linux</li>
+          <li style="color:#dbb330">裸机测试 xp</li>
+          <li style="color:#dbb330">移植 HAMT</li>
+          <li style="color:#dbb330">64bit 支持</li>
+          <li style="color:#dbb330">多核支持</li>
         </ul>
       </section>
 
@@ -45,174 +201,12 @@
       </section>
 
       <section>
-        <h2>思路</h2>
-        <table class="r-stretch">
-          <thead>
-            <tr>
-              <th>需求</th>
-              <th>解决方法</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>简化软件栈</td>
-              <td>采用类似 unikernel 的方法，地址空间只有一个二进制翻译器</td>
-            </tr>
-            <tr>
-              <td>开机即为 Windows</td>
-              <td>采用类似 Ramooflax 的方法，bios 启动之后就是二进制翻译器, 然后执行 guest</td>
-            </tr>
-            <tr>
-              <td>加速设备虚拟化</td>
-              <td>将设备全部交给 guest 机器管理，实现设备直通</td>
-            </tr>
-            <tr>
-              <td>加速虚拟化</td>
-              <td>QEMU 直接管理中断，无需 Linux 参与</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-
-      <section>
-        <h2>思路</h2>
-        <p>总结一下</p>
-        <ol>
-          <li>简化 Linux + QEMU 的软件栈</li>
-          <li>开机即为 Windows</li>
-          <li>在当前加速技术上进一步加速设备和中断虚拟化</li>
-        </ol>
-      </section>
-
-      <section>
-        <h2>Ramooflax</h2>
-        <img class="fragment" src="../../images/obito.jpg">
-      </section>
-
-      <section>
-        <h2>背景</h2>
-        <p>unikernel: 只为一个进程服务的 guest os</p>
-        <img class="fragment"
-          src="https://raw.githubusercontent.com/cetic/unikernels/master/MEDIA/normal_application_stack.PNG">
-        <img class="fragment"
-          src="https://raw.githubusercontent.com/cetic/unikernels/master/MEDIA/unikernel_application_stack.PNG">
-      </section>
-
-      <section>
-        <h2>背景</h2>
-        <p>QEMU 无所不能，但过于复杂</p>
-        <!-- 放一个 QEMU 的参数列表 -->
-        <img class="r-stretch" src="../../images/obito.jpg">
-      </section>
-
-      <section>
-        <h2>背景</h2>
-        <p>内核功能强大，但过于复杂</p>
-        <!-- 放一个到网卡的 stack -->
-        <img class="r-stretch" src="../../images/obito.jpg">
-      </section>
-
-      <section>
-        <h2>背景</h2>
-        <p>目前进行的优化</p>
-        <table class="r-stretch">
-          <thead>
-            <tr>
-              <th>内容</th>
-              <th>优化方法</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>CPU</td>
-              <td>采用 xqm 移除 tcg</td>
-            </tr>
-            <tr>
-              <td>内存</td>
-              <td>BTMMU / HAMT</td>
-            </tr>
-            <tr>
-              <td>设备</td>
-              <td>X</td>
-            </tr>
-            <tr>
-              <td>中断</td>
-              <td>X</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>尚且没有触碰到 Device 和 Interrupt</p>
-      </section>
-
-      <section>
-        <h2>背景</h2>
-        <p>Linux + QEMU 实现系统态翻译的问题</p>
-        <table class="r-stretch">
-          <thead>
-            <tr>
-              <th>内容</th>
-              <th>二进制翻译模拟方法</th>
-              <th>kvm</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>CPU</td>
-              <td>tcg</td>
-              <td>guest mode</td>
-            </tr>
-            <tr>
-              <td>内存</td>
-              <td>softmmu</td>
-              <td>tdp</td>
-            </tr>
-            <tr>
-              <td>Device</td>
-              <td>设备模拟</td>
-              <td>设备模拟 / virtio / VFIO</td>
-            </tr>
-            <tr>
-              <td>Interrupt</td>
-              <td> 中断芯片模拟 + tb 末尾检查</td>
-              <td> 中断芯片模拟 + 中断注入 / vt-d</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-
-
-      <section>
-        <h2>背景</h2>
-        <p> Linux + QEMU 的系统态模拟</p>
-        <!--    搞一个图描述一下      -->
-        <img class="r-stretch" src="../../images/obito.jpg">
-      </section>
-
-      <section>
-        <h2>目的</h2>
-
-        <section>
-          <ul>
-            <li>开机之后启动 x86 操作系统</li>
-            <li>加快系统态翻译</li>
-          </ul>
-        </section>
-
-        <section>
-          <ul>
-            <li>消灭指令集</li>
-          </ul>
-        </section>
-
-      </section>
-
-      <section>
-        <h2>BMBT : Bare Metal Binary Translator</h2>
+        <h2>裸金属二进制翻译器的设计与实现</h2>
         <!-- <img class="r-stretch" src="../../images/obito.jpg"> -->
         <ol>
           <li>目的</li>
+          <li>背景</li>
           <li>动机</li>
-          <li>思路</li>
           <li>设计</li>
           <li>进度</li>
         </ol>
@@ -435,30 +429,13 @@
       focusBodyOnPageVisibilityChange: true,
 
       // Transition style
-      transition: 'slide', // none/fade/slide/convex/concave/zoom
-
-      // Transition speed
-      transitionSpeed: 'default', // default/fast/slow
+      transition: 'convex', // none/fade/slide/convex/concave/zoom
 
       // Transition style for full page slide backgrounds
       backgroundTransition: 'fade', // none/fade/slide/convex/concave/zoom
 
-      // The maximum number of pages a single slide can expand onto when printing
-      // to PDF, unlimited by default
-      pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
-
-      // Prints each fragment on a separate slide
-      pdfSeparateFragments: true,
-
-      // Offset used to reduce the height of content within exported PDF pages.
-      // This exists to account for environment differences based on how you
-      // print to PDF. CLI printing options, like phantomjs and wkpdf, can end
-      // on precisely the total height of the document whereas in-browser
-      // printing has to end one pixel before.
-      pdfPageHeightOffset: -1,
-
       // Number of slides away from the current that are visible
-      viewDistance: 3,
+      viewDistance: 1000,
 
       // Number of slides away from the current that are visible on mobile
       // devices. It is advisable to set this to a lower number than
