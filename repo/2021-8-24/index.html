@@ -46,9 +46,9 @@
         <img class="r-stretch" src="../../images/QEMU-ARCH.svg">
 
         <div class="paragraph" style="font-size:0.2em">
-          <p> qemu code
+          <p> qeme code flow
             <span class="footnote">[<a id="_footnoteref_1" class="footnote"
-                href="https://vmsplice.net/~stefan/qemu-code-overview.pdf" title="View footnote.">2</a>]</span>
+                href="https://vmsplice.net/~stefan/qemu-code-overview.pdf" title="View footnote.">ref</a>]</span>
           </p>
         </div>
       </section>
@@ -79,7 +79,7 @@
               <td>设备 / 中断</td>
               <td>设备模拟 / virtio / <mark> VFIO</mark>
                 <span class="footnote">[<a id="_footnoteref_1" class="footnote"
-                    href="https://bugs.launchpad.net/qemu/+bug/1869006" title="View footnote.">3</a>]</span>
+                    href="https://bugs.launchpad.net/qemu/+bug/1869006" title="View footnote.">ref</a>]</span>
               </td>
               <td>设备模拟 / virtio / VFIO</td>
             </tr>
@@ -109,7 +109,7 @@
         <div class="paragraph" style="font-size:0.2em">
           <p>
             <span class="footnote">[<a id="_footnoteref_1" class="footnote"
-                href="https://makelinux.github.io/kernel/map/" title="View footnote.">1</a>]</span>
+                href="https://makelinux.github.io/kernel/map/" title="View footnote.">ref</a>]</span>
             Linux Kernel Maps
           </p>
         </div>
@@ -185,7 +185,6 @@
       </section>
 
 
-
       <section>
         <h2>设计</h2>
         <div class="text-left">
@@ -203,26 +202,27 @@
         <img class="r-stretch" src="../../images/bmbt.svg">
       </section>
 
-
-
       <section>
         <h2 class="r-rstrech">进度</h2>
-        <ul>
-          <li style="color:#d48ca7"> 背景调查</li>
-          <li style="color:#d48ca7"> 架构设计</li>
-          <li style="color:#d48ca7"> QEMU 的代码搬运</li>
-          <ul style="color:#d48ca7">
-            <li>枚举出来依赖的外部库</li>
-            <li>枚举出来需要重构的接口</li>
+        <div style="font-size:0.9em">
+          <ul>
+            <li style="color:#d48ca7"> 背景调查</li>
+            <li style="color:#d48ca7"> 架构设计</li>
+            <li style="color:#d48ca7"> QEMU 的代码搬运</li>
+            <ul style="color:#d48ca7">
+              <li>枚举出来依赖的外部库</li>
+              <li>枚举出来需要重构的接口</li>
+            </ul>
+            <li>用户态测试 SeaBIOS 代码</li>
+            <li>移除依赖的第三方库</li>
+            <li>构建裸机运行环境</li>
+            <li>裸机测试 32bit x86 Linux</li>
+            <li style="color:#dbb330">裸机测试 xp</li>
+            <li style="color:#dbb330">移植 HAMT</li>
+            <li style="color:#dbb330">64bit 支持</li>
+            <li style="color:#dbb330">多核支持</li>
           </ul>
-          <li>用户态测试 SeaBIOS 代码</li>
-          <li>移除依赖的第三方库</li>
-          <li>裸机测试 32bit x86 Linux</li>
-          <li style="color:#dbb330">裸机测试 xp</li>
-          <li style="color:#dbb330">移植 HAMT</li>
-          <li style="color:#dbb330">64bit 支持</li>
-          <li style="color:#dbb330">多核支持</li>
-        </ul>
+        </div>
       </section>
 
       <section>
