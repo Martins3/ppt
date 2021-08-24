@@ -32,7 +32,7 @@
         </section>
 
         <section>
-          <li>LoongArch 架构高效运行其他架构操作系统</li>
+          <li>LoongArch 架构高效运行其他架构的操作系统</li>
         </section>
 
         <section>
@@ -105,29 +105,31 @@
       <section>
         <h2>想法</h2>
         <img class="r-stretch" src="../../images/LKM.svg">
-        <p style="font-size:0.5em">Linux 内核很强大，但是对于系统态二进制翻译器而言，大多数功能不需要，其他的进程对于 QEMU 而言是只是干扰</p>
         <div class="paragraph" style="font-size:0.2em">
-          <p>
+          <p>Linux Kernel Maps
             <span class="footnote">[<a id="_footnoteref_1" class="footnote"
                 href="https://makelinux.github.io/kernel/map/" title="View footnote.">ref</a>]</span>
-            Linux Kernel Maps
           </p>
         </div>
+        <p style="font-size:0.5em">Linux 内核很强大，但是对于系统态二进制翻译器而言，大多数功能不需要，其他的进程对于 QEMU 而言是只是干扰</p>
       </section>
 
       <section>
         <h2>想法</h2>
         <img class="r-stretch" src="../../images/qemu-loc.png">
-        <p style="font-size:0.5em">QEMU 可以运行在各种操作系统上，支持 kvm tcg hvf xen 等 cpu 虚拟化方案，支持多种设备的模拟</p>
+        <p style="font-size:0.5em">QEMU 可以运行在各种操作系统上，支持 kvm tcg hvf xen 等 cpu 虚拟化方案，支持多种设备的模拟。但是我们只需要一个在 LoongArch
+          上运行的二进制翻译器。</p>
       </section>
 
       <section>
         <h2>想法</h2>
         <p>unikernel: 只为一个进程服务的 guest os</p>
-        <img class="fragment"
-          src="https://raw.githubusercontent.com/cetic/unikernels/master/MEDIA/normal_application_stack.PNG">
-        <img class="fragment"
-          src="https://raw.githubusercontent.com/cetic/unikernels/master/MEDIA/unikernel_application_stack.PNG">
+        <div class="r-stretch">
+          <img class="fragment"
+            src="https://raw.githubusercontent.com/cetic/unikernels/master/MEDIA/normal_application_stack.PNG">
+          <img class="fragment"
+            src="https://raw.githubusercontent.com/cetic/unikernels/master/MEDIA/unikernel_application_stack.PNG">
+        </div>
       </section>
 
       <section>
@@ -203,8 +205,8 @@
       </section>
 
       <section>
-        <h2 class="r-rstrech">进度</h2>
-        <div style="font-size:0.9em">
+        <h2>进度</h2>
+        <div class= "r-stretch" style="font-size:0.8em">
           <ul>
             <li style="color:#d48ca7"> 背景调查</li>
             <li style="color:#d48ca7"> 架构设计</li>
@@ -215,7 +217,7 @@
             </ul>
             <li>用户态测试 SeaBIOS 代码</li>
             <li>移除依赖的第三方库</li>
-            <li>构建裸机运行环境</li>
+            <li>构建裸机运行环境 🙋</li>
             <li>裸机测试 32bit x86 Linux</li>
             <li style="color:#dbb330">裸机测试 xp</li>
             <li style="color:#dbb330">移植 HAMT</li>
